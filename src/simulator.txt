@@ -1,0 +1,4 @@
+Build:
+    
+Run:
+    python simulate_DFA.py
