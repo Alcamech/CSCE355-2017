@@ -37,16 +37,14 @@ def main():
     # Create empty transition table for # states x alphabet
     for i, i_val in enumerate(states):
         for j, j_val in enumerate(alphabet):
-            transitions[(i_val,alphabet[j])] = 0
+            string_w_whole = string_w[0]
+            if i < len(string_w_whole):
+                if j_val == string_w_whole[i]:
+                    transitions[(i_val,alphabet[j])] = i_val+1
+                else:
+                    transitions[(i_val,alphabet[j])] = 0
             if i_val in accepting_states:
                 transitions[(i_val,alphabet[j])] = i_val # last row filled with accepting_state (loop on accepting)
-
-    current_state = 0
-    #print string_w[0]
-    # fill transitions for the string itself
-    for i in string_w[0]:
-        transitions[(current_state,i)] = current_state + 1
-        current_state = current_state + 1
 
     # build reference table
     curr_string=""
@@ -60,6 +58,10 @@ def main():
             if k+i not in reference_table.keys():
                 possible_strings_table[k+i]=v
                 #print v,k+i
+
+    #ref_table = { k : v for (k,v) in sorted(reference_table.iteritems())}
+    #for k,v in sorted(ref_table.items()):
+    #    print k,v
 
     # fill loop back transitions
     for k,v in sorted(reference_table.iteritems()):
