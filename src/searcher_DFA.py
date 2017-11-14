@@ -16,7 +16,7 @@ q' - start_state
 F  - accepting_states
 '''
 def main():
-    #read file in from command line argumen
+    #read file in from command line argument
     string_w_file = sys.argv[1]
 
     with open(string_w_file, 'r') as f: # open file
@@ -28,6 +28,8 @@ def main():
     states = range(len(string_w[0])+1) # Q - states
     accepting_states = [len(string_w[0])] # F - accepting_states
     transitions = {} # δ - transitions
+    reference_table = {}
+    possible_strings_table = {}
     print "Number of states:",len(string_w[0])+1
     print "Accepting states:",len(string_w[0])
     print "Alphabet: abcdefghijklmnopqrstuvwxyz"
@@ -41,15 +43,38 @@ def main():
 
     current_state = 0
     #print string_w[0]
-    #fill transitions for the string itself
+    # fill transitions for the string itself
     for i in string_w[0]:
         transitions[(current_state,i)] = current_state + 1
         current_state = current_state + 1
 
-    for k,v in sorted(transitions.iteritems()):
-        for i in char_in_string:
-            if i in k:
-                print k,v
+    # build reference table
+    curr_string=""
+    for i, i_val in enumerate(string_w[0]):
+        curr_string=curr_string+i_val
+        reference_table[curr_string]=i+1
 
+    # build possible strings table
+    for k,v in sorted(reference_table.iteritems()):
+        for i in char_in_string:
+            if k+i not in reference_table.keys():
+                possible_strings_table[k+i]=v
+                #print v,k+i
+
+    # fill loop back transitions
+    for k,v in sorted(reference_table.iteritems()):
+        for k2,v2 in possible_strings_table.iteritems():
+            if v not in accepting_states and v2 not in accepting_states:
+                if k2.endswith(k):
+                    transitions[(v2,k2[-1])]=v
+                    #print v2,v,k,k2
+
+    for i in states:
+        for j in alphabet:
+            print transitions[(i,j)],
+        print
+
+    #print reference_table
+    #print possible_strings_table
 if __name__ == '__main__':
     main()
