@@ -19,7 +19,7 @@ F  - accepting_states
 class DFA:
     current_state = None;
 
-    #initalize class variables
+    #initalize class variables based on DFA tuple
     def __init__(self, states, alphabet, transitions, start_state, accepting_states):
         self.states = states
         self.alphabet = alphabet
@@ -30,9 +30,9 @@ class DFA:
     # transition to state based on state and alphabet
     def transition_to_state(self, string_val):
         if ((self.current_state, string_val) not in self.transitions.keys()):
-            self.current_state
-            return
-        self.current_state = self.transitions[(self.current_state, string_val)]
+            self.current_state #stay in the current state
+        else:
+            self.current_state = self.transitions[(self.current_state, string_val)] # transition
 
     # determine whether or not we are in the accepting state
     def in_accept_state(self):
@@ -48,8 +48,8 @@ class DFA:
         for string_val in input_string:
             #print "string val ", string_val
             #print "current state ",self.current_state
-            self.transition_to_state(string_val);
-        return self.in_accept_state()
+            self.transition_to_state(string_val); # transition
+        return self.in_accept_state() # are we in the accepting state ?
 
 def main():
     #two files read in from command line arguments
