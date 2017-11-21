@@ -61,7 +61,10 @@ $bin_dir = "/home/lawton/Development/CSCE355-2017/bin";
 
 # Time limit for each run of your program (in seconds).  This is the value
 # I will use when grading.
-$timeout = 60;
+$timeout = 11;
+$long_timeout = 181;  # only for the text-search portion using an interpreted
+                      # language, such as PHP, Python, Perl, Lisp, ML, Haskell,
+                      # etc.
 
 # Flag to control deletion of temporary files --
 # a nonzero value means all temp files are deleted after they are used;
@@ -158,6 +161,7 @@ sub process_user {
 	cmt(" done\n");
 	$progress{$prog}++;
 	cmt("building $prog ...\n");
+	$rc = 0;
 	foreach $command (@{$build_run{BUILD}}) {
 	    cmt("  $command\n");
 	    $rc = system($command);
@@ -448,7 +452,7 @@ sub test_searcher {
 	cmt("    $command $in_file > $out_base.txt 2> ${out_base}-err.txt\n");
 	eval {
 	    local $SIG{ALRM} = sub { die "TIMED OUT\n" };
-	    alarm $timeout;
+	    alarm $long_timeout;
 	    $rc = system("$command $test_dir/$in_file > $out_base.txt 2> ${out_base}-err.txt");
 	    alarm 0;
 	};

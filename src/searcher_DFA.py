@@ -57,11 +57,6 @@ def main():
         for i in char_in_string:
             if k+i not in reference_table.keys():
                 possible_strings_table[k+i]=v
-                #print v,k+i
-
-    #ref_table = { k : v for (k,v) in sorted(reference_table.iteritems())}
-    #for k,v in sorted(ref_table.items()):
-    #    print k,v
 
     # fill loop back transitions
     for k,v in sorted(reference_table.iteritems()):
@@ -69,14 +64,12 @@ def main():
             if v not in accepting_states and v2 not in accepting_states:
                 if k2.endswith(k):
                     transitions[(v2,k2[-1])]=v
-                    #print v2,v,k,k2
 
+    # print transitions table
     for i in states:
         for j in alphabet:
             print transitions[(i,j)],
         print
 
-    #print reference_table
-    #print possible_strings_table
 if __name__ == '__main__':
     main()
